@@ -27,7 +27,7 @@ public class dllmain
     [InjectionEntryPoint(CreateThread = true, BuildTarget = ".dll")]
     public static void EntryPoint()
     {
-        MessageBox.Show("Hola Mundo", "DLL Test");
+        MessageBox.Show("Hello World", "DLL Test");
     }
 }
 ```
@@ -42,7 +42,7 @@ Public Class dllmain
     <InjectionEntryPoint(CreateThread:=True, BuildTarget:=".dll")>
     Public Shared Sub EntryPoint()
 
-        MessageBox.Show("Hola Mundo", "DLL Test")
+        MessageBox.Show("Hello World", "DLL Test")
 
     End Sub
 
