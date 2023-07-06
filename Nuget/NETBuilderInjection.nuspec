@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>NETBuilderInjection</id>
+    <version>$version$</version>
+    <title>Add injection capability to your managed DLL</title>
+    <authors>Destroyer</authors>
+    <owners>Destroyer</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Adds injection capability to your managed DLL works in Visual Studio 2013/2017 or automated builds. This task is designed to work out of the box, however, you can use an optional configuration file where you can find extra features.</description>    
+    <copyright>Copyright (c) 2019-2023 DestroyerDarkNess</copyright>
+    <projectUrl>https://github.com/DestroyerDarkNess/NETBuilderInjection</projectUrl>
+	<license type="expression">MIT</license>	
+    <tags>injection managed dynamics dotnet dll entrypoint</tags>
+  </metadata>
+  <files>
+    <file src="..\NETBuilderInjection\bin\release\ILMerge\NETBuilderInjection.dll" target="tools\NETBuilderInjection.dll" />
+    <file src="..\NETBuilderInjection\bin\release\ILMerge\NETBuilderInjection.pdb" target="tools\NETBuilderInjection.pdb" />
+    <file src="..\NETBuilderInjection\build\NETBuilderInjection.targets" target="build\NETBuilderInjection.targets" />
+  </files>
+</package>
