@@ -27,12 +27,8 @@
 - Write your DLL and Build Proyect .
 
 ```C
-[AttributeUsage(AttributeTargets.Method)]
-public class InjectionEntryPoint : Attribute
-{
-    public bool CreateThread { get; set; }
-    public string BuildTarget { get; set; } = ".dll";
-}
+ [AttributeUsage(AttributeTargets.Method)]
+    public class InjectionEntryPoint : Attribute  {   public bool CreateThread { get; set; } public string BuildTarget { get; set; } = ".dll";  }
 
 public class dllmain
 {
