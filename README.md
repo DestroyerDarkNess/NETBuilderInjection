@@ -8,19 +8,23 @@
   Add the injection capability to your managed DLL
 </p>
 
-# Steps
+# Install
 
-- 1) Install via NuGet Package :
+- Install via NuGet Package :
   ```
   [In process of publication]
   ```
-- 1) Manual Installation :
-  ```
-  1) Download Last Release version : https://github.com/DestroyerDarkNess/NETBuilderInjection/releases/tag/1.0.0
+- Manual Installation :
+  
+  1) Download Last Release version : [https://github.com/DestroyerDarkNess/NETBuilderInjection/releases/tag/1.0.0](https://github.com/DestroyerDarkNess/NETBuilderInjection/releases/tag/1.0.0)
   2) Open Package Manager Console in your VS Proyect.
-  3) Install NetBuilderInjection : Install-Package "C:xxxxxxx\Downloads\NETBuilderInjection.1.0.0.nupkg"
+  3) Install NetBuilderInjection :
   ```
-- 2) Write your DLL and Build Proyect .
+     Install-Package "C:xxxxxxx\Downloads\NETBuilderInjection.1.0.0.nupkg"
+  ```
+
+# How to Use
+- Write your DLL and Build Proyect .
 
 ```C
 [AttributeUsage(AttributeTargets.Method)]
@@ -57,7 +61,7 @@ Public Class dllmain
 
 End Class
 ```
-- 3) You will find your compiled assembly with the name: "xxx.exported.dll", that is the one that you can inject with any injector.
+- You will find your compiled assembly with the name: "xxx.exported.dll", that is the one that you can inject with any injector.
 
 ### limitations
 
