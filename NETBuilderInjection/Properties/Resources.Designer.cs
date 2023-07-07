@@ -71,6 +71,16 @@ namespace NETBuilderInjection.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] libz {
+            get {
+                object obj = ResourceManager.GetObject("libz", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to #include &lt;stdio.h&gt;
         ///#include &lt;Windows.h&gt;
         ///#include &lt;stdbool.h&gt;

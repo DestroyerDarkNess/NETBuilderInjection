@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -75,11 +76,15 @@ namespace NETBuilderInjection
         {
             //LogInputVariables();
 
-            string AssemblyPath = this.TargetPath;
+            string AssemblyPath = this.TargetPath; if (Path.GetExtension( AssemblyPath).ToLower() == ".exe") { Log.LogWarning(""); return true; }
+
             string Compiler;
+            string LibzMerger;
             ModuleDefMD AssemblyModule = null;
 
             try { Compiler = UnzipTCC_Compiler(); Log.LogWarning("Tcc Extracted!"); } catch (Exception ex) { Log.LogErrorFromException(ex); return false; }
+
+            try { LibzMerger = ExtractLibz(); Log.LogWarning("Libz Extracted!"); } catch (Exception ex) { Log.LogErrorFromException(ex); return false; }
 
             try { AssemblyModule = ModuleDefMD.Load(AssemblyPath); Log.LogWarning("Assembly Target Loaded!"); } catch (Exception ex) { Log.LogErrorFromException(ex); return false; }
 
@@ -96,6 +101,8 @@ namespace NETBuilderInjection
 
             string BuildTarget = ".dll";
 
+            bool MergeLibs = false;
+
             try
             {
                 //Setup Config parameters 
@@ -103,30 +110,115 @@ namespace NETBuilderInjection
 
                 CANamedArgument BuildFormatAtrrib = InjAttribute.GetProperty("BuildTarget"); if (BuildFormatAtrrib != null) { BuildTarget = BuildFormatAtrrib.Value.ToString(); }
 
+                CANamedArgument MergeAtrrib = InjAttribute.GetProperty("MergeLibs"); if (MergeAtrrib != null) { MergeLibs = (bool)MergeAtrrib.Value; }
+
 
                 Log.LogWarning($"CreateThreadStart : {CreateThreadStart}");
                 Log.LogWarning($"Build Target Format : {BuildTarget}");
-
+                Log.LogWarning($"MergeLibs? : {MergeLibs}");
             }
             catch (Exception ex) { Log.LogWarning(ex.Message); Log.LogWarning($"Attribute parameters Error : Please check the format!!"); }
 
-
-
+           
+          
             string TempNameAssembly = Path.GetFileNameWithoutExtension(AssemblyPath) + ".exported" + BuildTarget;
-            string TempAssembly = System.IO.Path.Combine(System.IO.Path.GetTempPath(), TempNameAssembly);
+            string TempDirEx  = System.IO.Path.Combine(System.IO.Path.GetTempPath(), Path.GetFileNameWithoutExtension(AssemblyPath));
+            string TempAssembly = System.IO.Path.Combine(TempDirEx, TempNameAssembly);
 
             try
             {
-            AssemblyModule.Kind = ModuleKind.Dll;
-
-            EntryMethod.ExportInfo = new MethodExportInfo();
-            EntryMethod.IsUnmanagedExport = true;
-            
-            ModuleWriterOptions opts = new ModuleWriterOptions(AssemblyModule);
-            opts.Cor20HeaderOptions.Flags = 0;
-            AssemblyModule.Write(TempAssembly, opts);
+                if (Directory.Exists(TempDirEx) == true) { Directory.Delete(TempDirEx, true); }
+                Directory.CreateDirectory(TempDirEx);
             }
-            catch (Exception ex) { Log.LogWarning(ex.Message); Log.LogWarning($"Error writing .NET Assembly!!"); return true; }
+            catch (Exception ex) { Log.LogWarning(ex.Message); Log.LogWarning($"Create TempFolder Error!!"); return true; }
+
+          
+           if (MergeLibs == false)
+                {
+                    try
+                    {
+
+                        AssemblyModule.Kind = ModuleKind.Dll;
+
+                        EntryMethod.ExportInfo = new MethodExportInfo();
+                        EntryMethod.IsUnmanagedExport = true;
+
+                        ModuleWriterOptions opts = new ModuleWriterOptions(AssemblyModule);
+                        opts.Cor20HeaderOptions.Flags = 0;
+                        AssemblyModule.Write(TempAssembly, opts);
+                    }
+                    catch (Exception ex) { Log.LogWarning(ex.Message); Log.LogWarning($"Error writing .NET Assembly!!"); return true; }
+
+                }
+                else {
+
+                try
+                {
+                   File.Copy( AssemblyPath, TempAssembly, true );
+
+                    foreach (AssemblyRef ModEx in AssemblyModule.GetAssemblyRefs())
+                    {
+                        try
+                        {
+
+                            string RelativePath = Path.Combine(Path.GetDirectoryName(AssemblyPath), ModEx.Name + ".dll");
+                            if (File.Exists(RelativePath) == true)
+                            {
+                                ModuleDef IsLoadPosibility = ModuleDefMD.Load(RelativePath);
+                                if (IsLoadPosibility.IsILOnly == true)
+                                {
+                                    string TempLibDLL = Path.Combine(TempDirEx, Path.GetFileName(RelativePath));
+                                    if (File.Exists(TempLibDLL) == true) { File.Delete(TempLibDLL); }
+                                    File.Copy(RelativePath, TempLibDLL, true);
+                                }
+                                IsLoadPosibility.Dispose();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                    }
+
+
+                    string TempLibz = Path.Combine(TempDirEx, Path.GetFileName(LibzMerger));
+                    if (File.Exists(TempLibz) == false) { File.Copy(LibzMerger, TempLibz, true);  }
+                    string TargetAsmName = Path.GetFileName(TempAssembly);
+
+                    Log.LogWarning("[RUNNING] Libz Merger  -> " + TempLibz);
+
+                    string FullLibzArgs = $"inject-dll --assembly {TargetAsmName} --include *.dll --exclude {TargetAsmName} --move";
+                   
+                    File.WriteAllText(Path.Combine(TempDirEx, "test.bat") , "libz.exe " + FullLibzArgs);
+                    
+                    string LibzResult = RuntccHost(TempLibz, FullLibzArgs);
+
+                    Log.LogWarning("[DEBUG] " + LibzResult);
+
+                    if (LibzResult.Contains("FileNotFoundException") || LibzResult.Contains("ArgumentException")) { Log.LogWarning("[Error] An unknown error occurred, sorry."); return true; }
+
+
+
+                    if (AssemblyModule != null) { AssemblyModule.Dispose(); };
+
+                    try { AssemblyModule = ModuleDefMD.Load(File.ReadAllBytes(TempAssembly)); Log.LogWarning("TempAssembly Target Loaded!"); } catch (Exception ex) { Log.LogErrorFromException(ex); return false; }
+                   
+                    EntryMethod = GetEntryPointWithAttr(AssemblyModule, out InjAttribute);
+
+                    AssemblyModule.Kind = ModuleKind.Dll;
+
+                    EntryMethod.ExportInfo = new MethodExportInfo();
+                    EntryMethod.IsUnmanagedExport = true;
+
+                    ModuleWriterOptions opts = new ModuleWriterOptions(AssemblyModule);
+                    opts.Cor20HeaderOptions.Flags = 0;
+                    AssemblyModule.Write(TempAssembly, opts);
+
+                }
+                catch (Exception ex) { Log.LogWarning(ex.Message); Log.LogWarning($"Merge Libs Error : Please check the Log!!"); return true; }
+          
+
+            }
+         
 
             string TCC_Args = "";
 
@@ -195,7 +287,8 @@ namespace NETBuilderInjection
 
                 Log.LogWarning("[RUNNING] TCC  -> " + Compiler);
 
-                string TccResult = RuntccHost(Compiler, StubTempFile, SavePath, TCC_Args);
+                string FullArguments = "\"" + StubTempFile + "\"" + TCC_Args + " -o " + "\"" + SavePath + "\"";
+                string TccResult = RuntccHost(Compiler, FullArguments);
 
                 Log.LogWarning("[DEBUG] " + TccResult);
 
@@ -206,17 +299,19 @@ namespace NETBuilderInjection
             }
             catch (Exception ex) { Log.LogWarning(ex.Message); Log.LogWarning($"Unexpected Error!!"); }
 
+            try { if (Directory.Exists(TempDirEx) == true) { Directory.Delete(TempDirEx, true); } }
+            catch (Exception ex) { Log.LogWarning($"The task fails with Success!! -> {ex.Message}"); }
 
 
-          return true;
+            return true;
 
         }
 
-        public string RuntccHost(string tcc, string Stub, string Out, string Argument = "")
+        public string RuntccHost(string tcc,  string FullArguments = "")
         {
             try
             {
-                string FullArguments = "\"" + Stub + "\"" + Argument + " -o " + "\"" + Out + "\"";
+                
                 Process cmdProcess = new Process();
                 {
                     var withBlock = cmdProcess;
@@ -227,6 +322,7 @@ namespace NETBuilderInjection
                         withBlock1.UseShellExecute = false;
                         withBlock1.RedirectStandardOutput = true;
                         withBlock1.RedirectStandardError = true;
+                        withBlock1.WorkingDirectory = Path.GetDirectoryName(tcc);
                     }
                     withBlock.Start();
                     withBlock.WaitForExit();
@@ -262,6 +358,7 @@ namespace NETBuilderInjection
         Log.LogWarning($"ConfigurationFilePath: {ConfigurationFilePath}");
     }
 
+        
         public string UnzipTCC_Compiler() {
 
             bool ExtractTCC = false;
@@ -288,6 +385,14 @@ namespace NETBuilderInjection
             return CCompilerExe;
 
         }
+
+        public string ExtractLibz()
+        {
+            string libzPath = Path.Combine(Path.GetDirectoryName(this.GetType().Assembly.Location), "libz.exe");
+            if (File.Exists(libzPath) == false) { File.WriteAllBytes(libzPath, NETBuilderInjection.Properties.Resources.libz); }
+            return libzPath;
+        }
+
 
         public string SetUpStup() {
 
