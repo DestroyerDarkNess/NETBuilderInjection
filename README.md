@@ -28,7 +28,12 @@
 
 ```C
  [AttributeUsage(AttributeTargets.Method)]
-    public class InjectionEntryPoint : Attribute  {   public bool CreateThread { get; set; } public string BuildTarget { get; set; } = ".dll";  }
+    public class InjectionEntryPoint : Attribute
+    {
+        public bool CreateThread { get; set; } = true;
+        public string BuildTarget { get; set; } = ".dll";
+        public bool MergeLibs { get; set; } = false;
+    }
 
 public class dllmain
 {
@@ -42,7 +47,13 @@ public class dllmain
 
 ```VB
 <AttributeUsage(AttributeTargets.Method)>
-Public Class InjectionEntryPoint : Inherits Attribute : Public Property CreateThread As Boolean : Public Property BuildTarget As String = ".dll" : End Class
+Public Class InjectionEntryPoint
+    Inherits Attribute
+
+    Public Property CreateThread As Boolean = True
+    Public Property BuildTarget As String = ".dll"
+    Public Property MergeLibs As Boolean = False
+End Class
 
 Public Class dllmain
 
