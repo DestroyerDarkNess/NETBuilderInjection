@@ -20,7 +20,7 @@
   2) Open Package Manager Console in your VS Proyect.
   3) Install NetBuilderInjection :
   ```
-     Install-Package "C:xxxxxxx\Downloads\NETBuilderInjection.1.0.0.nupkg"
+     Install-Package "C:xxxxxxx\Downloads\NETBuilderInjection.1.0.2.nupkg"
   ```
 
 # How to Use
