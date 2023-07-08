@@ -16,7 +16,7 @@
   ```
 - Manual Installation :
   
-  1) Download Last Release version : [https://github.com/DestroyerDarkNess/NETBuilderInjection/releases/tag/1.0.0](https://github.com/DestroyerDarkNess/NETBuilderInjection/releases/tag/1.0.0)
+  1) Download Last Release version : [NETBuilderInjection v1.0.2](https://github.com/DestroyerDarkNess/NETBuilderInjection/releases/tag/1.0.2)
   2) Open Package Manager Console in your VS Proyect.
   3) Install NetBuilderInjection :
   ```
