@@ -7,6 +7,7 @@ using Microsoft.Build.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration.Assemblies;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -119,8 +120,6 @@ namespace NETBuilderInjection
             }
             catch (Exception ex) { Log.LogWarning(ex.Message); Log.LogWarning($"Attribute parameters Error : Please check the format!!"); }
 
-           
-          
             string TempNameAssembly = Path.GetFileNameWithoutExtension(AssemblyPath) + ".exported" + BuildTarget;
             string TempDirEx  = System.IO.Path.Combine(System.IO.Path.GetTempPath(), Path.GetFileNameWithoutExtension(AssemblyPath));
             string TempAssembly = System.IO.Path.Combine(TempDirEx, TempNameAssembly);
@@ -156,27 +155,13 @@ namespace NETBuilderInjection
                 {
                    File.Copy( AssemblyPath, TempAssembly, true );
 
-                    foreach (AssemblyRef ModEx in AssemblyModule.GetAssemblyRefs())
-                    {
-                        try
-                        {
+                    List<string> AllLibs = GetLibsToMergedRecursive(AssemblyModule, Path.GetDirectoryName(AssemblyPath));
 
-                            string RelativePath = Path.Combine(Path.GetDirectoryName(AssemblyPath), ModEx.Name + ".dll");
-                            if (File.Exists(RelativePath) == true)
-                            {
-                                ModuleDef IsLoadPosibility = ModuleDefMD.Load(RelativePath);
-                                if (IsLoadPosibility.IsILOnly == true)
-                                {
-                                    string TempLibDLL = Path.Combine(TempDirEx, Path.GetFileName(RelativePath));
-                                    if (File.Exists(TempLibDLL) == true) { File.Delete(TempLibDLL); }
-                                    File.Copy(RelativePath, TempLibDLL, true);
-                                }
-                                IsLoadPosibility.Dispose();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                        }
+                    foreach (string LibsToMerged in AllLibs)
+                    {
+                        string TempLibDLL = Path.Combine(TempDirEx, Path.GetFileName(LibsToMerged));
+                        if (File.Exists(TempLibDLL) == true) { File.Delete(TempLibDLL); }
+                        File.Copy(LibsToMerged, TempLibDLL, true);
                     }
 
 
@@ -357,6 +342,38 @@ namespace NETBuilderInjection
         Log.LogWarning($"KeyFile: {KeyFile}");
         Log.LogWarning($"ConfigurationFilePath: {ConfigurationFilePath}");
     }
+
+       
+        public List<string> GetLibsToMergedRecursive(ModuleDef ASM, string WorkingDir) {
+            List<string> Result = new List<string>();
+
+            foreach (AssemblyRef ModEx in ASM.GetAssemblyRefs())
+            {
+                try
+                {
+                    Log.LogWarning("Target Merger -> " + ModEx.Name + ".dll");
+
+                    string RelativePath = Path.Combine(WorkingDir, ModEx.Name + ".dll");
+                    if (File.Exists(RelativePath) == true)
+                    {
+                        ModuleDef IsLoadPosibility = ModuleDefMD.Load(RelativePath);
+                        Log.LogWarning("IsLoadPosibility -> " + IsLoadPosibility);
+                        if (IsLoadPosibility.IsILOnly == true)
+                        {
+                            Result.Add(RelativePath);
+                            List<string> OtherLibs = GetLibsToMergedRecursive(IsLoadPosibility, WorkingDir);
+                            if (OtherLibs.Count != 0) { Result.AddRange(OtherLibs); }
+                        }
+                        IsLoadPosibility.Dispose();
+                    }
+                }
+                catch (Exception ex) { }
+            }
+
+
+
+            return Result;
+        }
 
         
         public string UnzipTCC_Compiler() {
