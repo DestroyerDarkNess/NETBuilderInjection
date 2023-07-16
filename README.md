@@ -23,6 +23,25 @@
      Install-Package "C:xxxxxxx\Downloads\NETBuilderInjection.1.0.2.nupkg"
   ```
 
+# Features
+**NETBuilderInjection** It has very useful features, which I will explain.
+
+- NETBuilderInjection Works with a special Attribute called "InjectionEntryPoint" which has several Pre-Configuration options:
+
+| Name | Type | Description       |
+|----------|--------|---------------|
+| CreateThread | bool | If set to true, a new thread will be created for your EntryPoint. |
+| BuildTarget  | string | In case your target plugin is not .dll, but rather .asi, then with this you easily configure the target extension. It also has the function of executable (.exe) which is explained below. |
+| MergeLibs | bool | Match your assembly with the libraries it needs, if you get a single binary. |
+
+After the first use, **NETBuilderInjection** will extract important resources to use, among them is the Stub.c that would be the container of your application. **That's right NetBuilderInjection is basically a C-packer for .NET that adds a native layer to your assembly.**
+
+**You can edit that Stub.c and create your own packer , you can find it in the following path:**
+
+```
+$(ProjectSolution)\packages\NETBuilderInjection.1.0.2\tools
+```
+
 # How to Use
 - Write your DLL and Build Proyect .
 
@@ -69,6 +88,122 @@ Public Class dllmain
 End Class
 ```
 - You will find your compiled assembly with the name: "xxx.exported.dll", that is the one that you can inject with any injector.
+
+# Other uses
+**NETBuilderInjection** is not limited only to being able to generate a DLL with Injection capacity, it can also generate your executable (.exe) in addition to the ability to join your assembly and libraries in 1 only.
+
+1) In your WinForms Project, go to *Program.cs* or *Program.vb* **(By default you won't see it in your VisualBasic Project, you must add the class manually)**
+
+2) Write the following code in your Program class:
+
+```VB
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Security;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.VisualBasic;
+using System.Runtime.InteropServices;
+using System.Threading;
+
+[AttributeUsage(AttributeTargets.Method)]
+public class InjectionEntryPoint : Attribute
+{
+    public bool CreateThread { get; set; } = true;
+    public string BuildTarget { get; set; } = ".dll";
+    public bool MergeLibs { get; set; } = false;
+}
+
+public class Program
+{
+    [System.Runtime.InteropServices.DllImport("user32.dll")]  private static bool SetProcessDPIAware();
+
+    [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)] private static bool FreeConsole();
+    
+    [InjectionEntryPoint(MergeLibs = true, CreateThread = false, BuildTarget = ".exe")]
+    [STAThread]
+    public static void Main()
+    {
+        FreeConsole();
+
+        bool Runtime = true;
+        Thread t = new Thread(() =>
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            SetProcessDPIAware();
+
+            Application.Run(new Form1()); // Start your MainForm of your application
+            Runtime = false;
+        });
+
+        t.SetApartmentState(ApartmentState.STA);
+        t.Start();
+
+        while ((Runtime)) { }
+   }
+}
+
+```
+
+```VB
+Imports System.Runtime.InteropServices
+Imports System.Threading
+
+<AttributeUsage(AttributeTargets.Method)>
+Public Class InjectionEntryPoint
+    Inherits Attribute
+
+    Public Property CreateThread As Boolean = True
+    Public Property BuildTarget As String = ".dll"
+    Public Property MergeLibs As Boolean = False
+End Class
+
+NotInheritable Class Program
+
+    <System.Runtime.InteropServices.DllImport("user32.dll")>
+    Private Shared Function SetProcessDPIAware() As Boolean
+    End Function
+
+    <DllImport("kernel32.dll", SetLastError:=True, ExactSpelling:=True)>
+    Private Shared Function FreeConsole() As Boolean
+    End Function
+
+
+    <InjectionEntryPoint(MergeLibs:=True, CreateThread:=False, BuildTarget:=".exe")>
+    <STAThread>
+    Friend Shared Sub Main()
+        FreeConsole()
+
+        Dim Runtime As Boolean = True
+        Dim t As Thread = New Thread(Sub()
+                                         Application.EnableVisualStyles()
+                                         Application.SetCompatibleTextRenderingDefault(False)
+
+                                         SetProcessDPIAware()
+
+                                         Application.Run(New Form1) ' Start your MainForm of your application
+                                         Runtime = False
+                                     End Sub)
+
+        t.SetApartmentState(ApartmentState.STA)
+        t.Start()
+
+        Do While (Runtime) : Loop
+
+    End Sub
+End Class
+
+```
+
+**This should work for WPF projects as well, with a little more work on Stub.c you could make your own native packer.**
 
 ### limitations
 
