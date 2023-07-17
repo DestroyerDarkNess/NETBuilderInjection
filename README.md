@@ -97,18 +97,6 @@ End Class
 2) Write the following code in your Program class:
 
 ```VB
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -148,7 +136,8 @@ public class Program
         t.Start();
 
         while ((Runtime)) { }
-   }
+        Environment.Exit(0);
+  }
 }
 
 ```
@@ -197,7 +186,7 @@ NotInheritable Class Program
         t.Start()
 
         Do While (Runtime) : Loop
-
+        Environment.Exit(0)
     End Sub
 End Class
 
