@@ -46,17 +46,24 @@ $(ProjectSolution)\packages\NETBuilderInjection.1.0.2\tools
 - Write your DLL and Build Proyect .
 
 ```C
- [AttributeUsage(AttributeTargets.Method)]
-    public class InjectionEntryPoint : Attribute
-    {
-        public bool CreateThread { get; set; } = true;
-        public string BuildTarget { get; set; } = ".dll";
-        public bool MergeLibs { get; set; } = false;
-    }
+
+[AttributeUsage(AttributeTargets.Method)]
+public class InjectionEntryPoint : Attribute
+{
+    public bool CreateThread { get; set; } = true;
+    public string BuildTarget { get; set; } = ".dll";
+    public bool MergeLibs { get; set; } = false;
+    public bool ILoader { get; set; } = false;
+    public string ProtectionRules { get; set; } = string.Empty;
+    public string ILoaderProtectionRules { get; set; } = string.Empty;
+    public string PreCompiler { get; set; } = string.Empty;
+    public string CloneTo { get; set; } = string.Empty;
+    public bool BasicILoaderProtection { get; set; } = false;
+}
 
 public class dllmain
 {
-    [InjectionEntryPoint(CreateThread = true, BuildTarget = ".dll")]
+    [InjectionEntryPoint(MergeLibs = true, CreateThread = true, BuildTarget = ".dll")]
     public static void EntryPoint()
     {
         MessageBox.Show("Hello World", "DLL Test");
@@ -72,12 +79,19 @@ Public Class InjectionEntryPoint
     Public Property CreateThread As Boolean = True
     Public Property BuildTarget As String = ".dll"
     Public Property MergeLibs As Boolean = False
+    Public Property ILoader As Boolean = False
+    Public Property ProtectionRules As String = String.Empty
+    Public Property ILoaderProtectionRules As String = String.Empty
+    Public Property PreCompiler As String = String.Empty
+    Public Property CloneTo As String = String.Empty
+    Public Property BasicILoaderProtection As Boolean = False
+
 End Class
 
 Public Class dllmain
 
 
-    <InjectionEntryPoint(CreateThread:=True, BuildTarget:=".dll")>
+    <InjectionEntryPoint(MergeLibs:=True, CreateThread:=True, BuildTarget:=".dll")>
     Public Shared Sub EntryPoint()
 
         MessageBox.Show("Hello World", "DLL Test")
