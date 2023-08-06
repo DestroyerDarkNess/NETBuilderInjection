@@ -16,11 +16,11 @@
   ```
 - Manual Installation :
   
-  1) Download Last Release version : [NETBuilderInjection v1.0.2](https://github.com/DestroyerDarkNess/NETBuilderInjection/releases/tag/1.0.2)
+  1) Download Last Release version : [NETBuilderInjection v1.0.3](https://github.com/DestroyerDarkNess/NETBuilderInjection/releases/tag/1.0.3)
   2) Open Package Manager Console in your VS Proyect.
   3) Install NetBuilderInjection :
   ```
-     Install-Package "C:xxxxxxx\Downloads\NETBuilderInjection.1.0.2.nupkg"
+     Install-Package "C:xxxxxxx\Downloads\NETBuilderInjection.1.0.3.nupkg"
   ```
 
 # Features
@@ -39,7 +39,7 @@ After the first use, **NETBuilderInjection** will extract important resources to
 **You can edit that Stub.c and create your own packer , you can find it in the following path:**
 
 ```
-$(ProjectSolution)\packages\NETBuilderInjection.1.0.2\tools
+$(ProjectSolution)\packages\NETBuilderInjection.1.0.3\tools
 ```
 
 # How to Use
