@@ -1,0 +1,5 @@
+Install-Package "C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\Nuget\NETBuilderInjection.1.0.3.nupkg"
+
+UnInstall-Package NETBuilderInjection
+
+Update-Package -Id NETBuilderInjection –reinstall

@@ -8,10 +8,9 @@ unsigned char rawData[$DataLength$] = {
 	$DataByte$
 };
 
-
 int main()
 {
-
+	bool Conditional = false;
 	char *Pathvar = getenv("TEMP");
 	char *DLLName = "$DllName$";
 	char *EntryPoint = "$DllMain$";
@@ -41,6 +40,7 @@ int main()
 	ManagedMethod();
 	printf("Executing WaitForSingleObject\n");
 	WaitForSingleObject(ModuleDLL, INFINITE);
+	while (Conditional) { }
 	printf("Ending Executing\n");
 	FreeLibrary(ModuleDLL);
 

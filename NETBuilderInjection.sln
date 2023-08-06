@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NETBuilderInjection", "NETBuilderInjection\NETBuilderInjection.csproj", "{6CC199CD-6E84-4087-B921-EA0E338F65C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lLoader", "lLoader\lLoader.csproj", "{9C53E3A8-1407-43D8-A297-65A520EA35E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6CC199CD-6E84-4087-B921-EA0E338F65C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CC199CD-6E84-4087-B921-EA0E338F65C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CC199CD-6E84-4087-B921-EA0E338F65C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C53E3A8-1407-43D8-A297-65A520EA35E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C53E3A8-1407-43D8-A297-65A520EA35E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C53E3A8-1407-43D8-A297-65A520EA35E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C53E3A8-1407-43D8-A297-65A520EA35E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

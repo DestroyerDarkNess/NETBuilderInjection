@@ -1,0 +1,5 @@
+
+<project outputDir="$out$" baseDir="$int$" xmlns="http://confuser.codeplex.com">
+   <rule pattern="true" preset="$level$" />
+    <module path="$filename$" />
+</project>
