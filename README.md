@@ -22,6 +22,12 @@
   ```
      Install-Package "C:xxxxxxx\Downloads\NETBuilderInjection.1.0.3.nupkg"
   ```
+# Samples
+
+| Sample | Description       |
+|----------|---------------|
+| [Universal.FPS.Counter](https://github.com/DestroyerDarkNess/Universal.FPS.Counter) | A Universal FPS Counter for games |
+| 💠 [RenderSpy.Imgui](https://github.com/DestroyerDarkNess/RenderSpy.Imgui) | Easily use imgui in your favorite game. |
 
 # Features
 **NETBuilderInjection** It has very useful features, which I will explain.
