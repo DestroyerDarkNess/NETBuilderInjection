@@ -1,5 +1,5 @@
-Install-Package "C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\Nuget\NETBuilderInjection.1.0.3.nupkg"
+Install-Package "C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\Nuget\NETBuilderInjection.1.0.4.nupkg" -ProjectName RenderSpy.Imgui.VB
 
-UnInstall-Package NETBuilderInjection
+UnInstall-Package NETBuilderInjection -ProjectName RenderSpy.Imgui.VB
 
 Update-Package -Id NETBuilderInjection –reinstall

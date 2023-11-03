@@ -1,11 +1,7 @@
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\bin\Release\NETBuilderInjection.dll
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\bin\Release\NETBuilderInjection.pdb
-C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\bin\Release\dnlib.dll
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\bin\Release\HydraHelper.dll
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\bin\Release\ModuleLoader.dll
-C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\bin\Release\dnlib.xml
-C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\bin\Release\HydraHelper.pdb
-C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\bin\Release\ModuleLoader.pdb
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\obj\Release\NETBuilderInjection.csproj.AssemblyReference.cache
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\obj\Release\NETBuilderInjection.Properties.Resources.resources
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\NETBuilderInjection\obj\Release\NETBuilderInjection.csproj.GenerateResource.cache

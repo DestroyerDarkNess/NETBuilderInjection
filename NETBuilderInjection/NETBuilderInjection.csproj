@@ -35,15 +35,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="dnlib">
-      <HintPath>..\..\Hydra\Hydra\bin\Debug\dnlib.dll</HintPath>
+    <Reference Include="dnlib, Version=3.5.0.0, Culture=neutral, PublicKeyToken=50e96378b6e77999, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\dnlib.dll</HintPath>
     </Reference>
     <Reference Include="HydraHelper">
-      <HintPath>..\..\Hydra\Hydra\bin\Debug\HydraHelper.dll</HintPath>
+      <HintPath>..\Libs\HydraHelper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="ModuleLoader">
+      <HintPath>..\Libs\ModuleLoader.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />

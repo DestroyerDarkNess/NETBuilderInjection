@@ -1,6 +1,6 @@
-C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\lLoader\bin\Release\lLoader.dll
-C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\lLoader\bin\Release\lLoader.pdb
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\lLoader\obj\Release\lLoader.csproj.AssemblyReference.cache
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\lLoader\obj\Release\lLoader.csproj.CoreCompileInputs.cache
+C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\lLoader\bin\Release\lLoader.dll
+C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\lLoader\bin\Release\lLoader.pdb
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\lLoader\obj\Release\lLoader.dll
 C:\Users\58424\Documents\Visual Studio 2022\Projects\NETBuilderInjection\lLoader\obj\Release\lLoader.pdb

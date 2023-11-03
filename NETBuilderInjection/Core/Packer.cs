@@ -30,6 +30,8 @@ namespace NETBuilderInjection.Core
 
         }
 
+        string Textchars = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" + "阿贝色德饿艾弗日阿什伊鸡卡艾勒艾马艾娜哦佩苦艾和艾丝特玉维独布勒维伊克斯伊格黑克贼德" + "αβγδεζηθικλµνξοπρστυϕχψω" + "れづれなるまゝに日暮らし硯にむかひて心にうりゆくよな事を、こはかとなく書きつくればあやうこそものぐるほけれ";
+
         public bool Load()
         {
 
@@ -124,7 +126,17 @@ namespace NETBuilderInjection.Core
                 Log("Writing Assembly...");
                 try
                 {
+                    if (BuildConfig.BasicILoaderProtection == true)
+                    {
 
+                        MindLated.Protection.CtrlFlow.ControlFlowObfuscation.Execute(AssemblyModule);
+                        kov.NET.Protections.VariableMover.Execute(AssemblyModule);
+                        Junkfuscator.Core.Protections.Mutations.MutationExecute(AssemblyModule);
+                        MindLated.Protection.INT.AddIntPhase.Execute2(AssemblyModule);
+                        Junkfuscator.Core.Protections.AntiDe4Dot.Execute(AssemblyModule);
+                        Junkfuscator.Core.Protections.ClassAndMethods.Execute(AssemblyModule);
+
+                    }
                     AssemblyModule.Kind = ModuleKind.Dll;
 
                     EntryPointMethod.ExportInfo = new MethodExportInfo();
@@ -143,7 +155,22 @@ namespace NETBuilderInjection.Core
                 try
                 {
                     CustomAttribute InjAttribute;
-                    File.Copy(AssemblyTarget, TempAssembly, true);
+
+                    if (BuildConfig.BasicILoaderProtection == true)
+                    {
+
+                        Junkfuscator.Core.Protections.ClassAndMethods.Execute(AssemblyModule);
+                       
+                        ModuleWriterOptions opts = new ModuleWriterOptions(AssemblyModule);
+                        AssemblyModule.Write(TempAssembly, opts);
+                    }
+                    else {
+
+                        File.Copy(AssemblyTarget, TempAssembly, true);
+
+                    }
+
+                   
 
                     foreach (string LibsToMerged in AllLibs)
                     {
@@ -178,6 +205,20 @@ namespace NETBuilderInjection.Core
                         try { AssemblyModule = ModuleDefMD.Load(File.ReadAllBytes(TempAssembly)); } catch (Exception ex) { return false; }
 
                         EntryPointMethod = GetEntryPointWithAttr(AssemblyModule, out InjAttribute);
+                       
+                        if (BuildConfig.BasicILoaderProtection == true)
+                        {
+                           
+                            MindLated.Protection.INT.AddIntPhase.Execute2(AssemblyModule);
+                            Junkfuscator.Core.Protections.AntiDe4Dot.Execute(AssemblyModule);
+                            kov.NET.Protections.Renamer.fakeobfuscation(AssemblyModule);
+                            MindLated.Protection.Anti.AntiDe4dot.Execute(AssemblyModule.Assembly);
+                            MindLated.Protection.Anti.AntiDebug.Execute(AssemblyModule);
+                            MindLated.Protection.Anti.AntiDump.Execute(AssemblyModule);
+                            MindLated.Protection.Proxy.ProxyString.Execute(AssemblyModule, Textchars);
+                            MindLated.Protection.Proxy.ProxyInt.Execute(AssemblyModule, Textchars);
+                            
+                        }
 
                         AssemblyModule.Kind = ModuleKind.Dll;
 
@@ -186,6 +227,7 @@ namespace NETBuilderInjection.Core
 
                         ModuleWriterOptions opts = new ModuleWriterOptions(AssemblyModule);
                         opts.Cor20HeaderOptions.Flags = 0;
+
                         AssemblyModule.Write(TempAssembly, opts);
                     }
 
@@ -336,7 +378,7 @@ namespace NETBuilderInjection.Core
 
                 if (BuildConfig.BasicILoaderProtection == true)
                 {
-
+                   
                     MindLated.Protection.CtrlFlow.ControlFlowObfuscation.Execute(ILoaderModule);
                     kov.NET.Protections.VariableMover.Execute(ILoaderModule);
                     Junkfuscator.Core.Protections.Mutations.MutationExecute(ILoaderModule);
@@ -464,10 +506,10 @@ namespace NETBuilderInjection.Core
             #endregion
 
             #region " Dispose and Clean "
-            //try { if (Directory.Exists(TempDirEx) == true) { Directory.Delete(TempDirEx, true); } }
-            //catch (Exception ex) { }
+            try { if (Directory.Exists(TempDirEx) == true) { Directory.Delete(TempDirEx, true); } }
+            catch (Exception ex) { }
 
-            try { Clipboard.SetText(CurrentClipData); } catch { }
+            //try { Clipboard.SetText(CurrentClipData); } catch { }
             #endregion
 
 
